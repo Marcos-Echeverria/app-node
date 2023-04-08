@@ -11,12 +11,12 @@ const getAll= async () => {
 
 const getById = async (id) => {
     const collection = await Database(COLLECTION);
-    return collection.findOne({ _id: ObjectId(id) });
+    return collection.findOne({ _id: new ObjectId(id) });
 }
 
 const create = async (product) => {
     const collection = await Database(COLLECTION);
-    let result = collection.insertOne(product);
+    let result = await collection.insertOne(product);
     return result.insertedId
 }
 
