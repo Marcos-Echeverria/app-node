@@ -5,13 +5,13 @@ const { ProductsService } = require('./services');
 const { Response } = require('../common/response');
 const { response } = require('express');
 
-module.exports.ProductsController ={
+module.exports.ProductsController = {
 
 
     getProducts: async (req, res) => {
         try {
             let product = await ProductsService.getAll()
-            Response.succes(res, 200, 'Lista de productos', product)
+            Response.success(res, 200, 'Lista de productos', product)
         } catch (error) {
             debug(error);
             Response.error(res);
@@ -21,12 +21,12 @@ module.exports.ProductsController ={
 
     getProduct: async (req, res) => {
         try {
-            const { params : { id } } = req;
+            const { params: { id } } = req;
             let product = await ProductsService.getById(id);
-            if (!product){
+            if (!product) {
                 Response.error(res, new createError.NotFound());
-            }else {
-                Response.succes(res, 200, `Producto ${id}`, product)
+            } else {
+                Response.success(res, 200, `Producto ${id}`, product);
             }
         } catch (error) {
             debug(error);
@@ -40,11 +40,11 @@ module.exports.ProductsController ={
             const { body } = req;
             if (!body || Object.keys(body).length === 0) {
                 Response.error(res, new createError.BadRequest());
-            }else {
+            } else {
                 const insertedId = await ProductsService.create(body);
-                Response.succes(res, 201, 'Producto agregado', insertedId)
+                Response.success(res, 201, 'Producto agregado', insertedId);
             }
-        }   catch (error) {   
+        } catch (error) {
             debug(error);
             Response.error(res);
         }
@@ -57,5 +57,32 @@ module.exports.ProductsController ={
             debug(error);
             Response.error(res);
         }
+    },
+
+    updateProduct: async (req, res) => {
+        try {
+            const { params: { id }, body } = req;
+            const updatedProduct = await ProductsService.update(id, body);
+            Response.success(res, 200, `Producto ${id} actualizado`, updatedProduct);
+        } catch (error) {
+            debug(error);
+            Response.error(res);
+        }
+    },
+
+    deleteProduct: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const result = await ProductsService.deleteById(id);
+            if (result.deletedCount === 0) {
+                Response.error(res, new createError.NotFound());
+            } else {
+                Response.success(res, 200, `Producto ${id} eliminado`);
+            }
+        } catch (error) {
+            debug(error);
+            Response.error(res);
+        }
     }
+
 };
