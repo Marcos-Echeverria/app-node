@@ -7,8 +7,9 @@ const router = express.Router();
 module.exports.ProductsAPI = (app) => {
     router
     .get('/',ProductsController.getProducts) //http://localhost:300/api/products/
+    .get('/report', ProductsController.generateReport)
     .get('/:id', ProductsController.getProduct) //http://localhost:300/api/products/23
     .post('/', ProductsController.CreateProduct) 
 
-    app.use('/api/products', router)
+    app.use('/api/products', router);
 }

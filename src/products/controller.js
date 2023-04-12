@@ -13,8 +13,8 @@ module.exports.ProductsController ={
             let product = await ProductsService.getAll()
             Response.succes(res, 200, 'Lista de productos', product)
         } catch (error) {
-            debug(error)
-            Response.error(res)
+            debug(error);
+            Response.error(res);
         }
     },
 
@@ -29,8 +29,8 @@ module.exports.ProductsController ={
                 Response.succes(res, 200, `Producto ${id}`, product)
             }
         } catch (error) {
-            debug(error)
-            Response.error(res)
+            debug(error);
+            Response.error(res);
         }
     },
 
@@ -45,9 +45,17 @@ module.exports.ProductsController ={
                 Response.succes(res, 201, 'Producto agregado', insertedId)
             }
         }   catch (error) {   
-            debug(error)
-            Response.error(res)
+            debug(error);
+            Response.error(res);
         }
     },
 
-}
+    generateReport: (req, res) => {
+        try {
+            ProductsService.generateReport('inventario', res);
+        } catch (error) {
+            debug(error);
+            Response.error(res);
+        }
+    }
+};
